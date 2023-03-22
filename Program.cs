@@ -1,4 +1,4 @@
-﻿string[] genders;
+﻿string[] genders = new string[0];
 int[] ages = new int[0];
 double[] incomes = new double[0];
 
@@ -20,6 +20,9 @@ while (true)
             Console.WriteLine("How many people will be interviewed?");
             int numberOfPeople = int.Parse(Console.ReadLine()!);
             LoopTheInput(numberOfPeople);
+            Console.WriteLine($"genders are: {genders}");
+            Console.WriteLine($"genders are: {ages}");
+            Console.WriteLine($"genders are: {incomes}");
 
         }
     }
@@ -31,7 +34,7 @@ void LoopTheInput(int numberOfPeople)
     {
         GetInputData();
     }
-    throw new NotImplementedException();
+    
 
 }
 
