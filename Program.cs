@@ -3,7 +3,10 @@ int[] ages = new int[0];
 double[] incomes = new double[0];
 
 while (true)
+
 {
+    
+
     Console.WriteLine("Menu:");
     Console.WriteLine("1. InputData");
     Console.WriteLine("2. Census");
@@ -20,11 +23,12 @@ while (true)
             Console.WriteLine("How many people will be interviewed?");
             int numberOfPeople = int.Parse(Console.ReadLine()!);
             LoopTheInput(numberOfPeople);
-            Console.WriteLine($"genders are: {genders}");
-            Console.WriteLine($"genders are: {ages}");
-            Console.WriteLine($"genders are: {incomes}");
 
         }
+        else if (number == (int)MenuOption.Census)
+        { DisplayCensus(); } 
+        else if (number == (int)MenuOption.Exit)
+        { Environment.Exit(0); }
     }
 }
 
@@ -34,7 +38,8 @@ void LoopTheInput(int numberOfPeople)
     {
         GetInputData();
     }
-    
+    Console.Clear();
+    Console.WriteLine("The results are saved. Press 2 to see the results.");
 
 }
 
@@ -57,7 +62,7 @@ static void GetInputData()
     
 
 
-    Console.Write("Enter income: ");
+    Console.Write("Enter income (in euro): ");
     string incomeInput = Console.ReadLine()!;
     double income = double.Parse(incomeInput);
     double[] incomes = new double[1];
@@ -65,6 +70,23 @@ static void GetInputData()
 
 }
 
+static void DisplayCensus()
+{
+    string[] genders = new string[1];
+    int[] ages = new int[1];
+    double[] incomes = new double[1];
+    Console.WriteLine($"Number of people interviewed: {genders.Length}");
+    Console.WriteLine("Ages");
+    for (int i = 0; i < ages.Length; i++)
+    {
+        Console.Write(ages[i] + " ");
+    }
+    Console.WriteLine("Incomes");
+    for (int i = 0; i < incomes.Length; i++)
+    {
+        Console.Write(incomes[i] + " ");
+    }
+}
 
 
 public enum MenuOption
