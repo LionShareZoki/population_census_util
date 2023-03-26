@@ -22,6 +22,7 @@ while (true)
         }
         else if (number == (int)MenuOption.Census)
         {
+            showCensusMenu();
             DisplayCensus(people);
         }
         else if (number == (int)MenuOption.Exit)
@@ -40,6 +41,39 @@ void LoopTheInput(int numberOfPeople, ref Tuple<string, int, double>[] people)
     }
     Console.Clear();
     Console.WriteLine("The results are saved. Press 2 to see the results.");
+}
+static void showCensusMenu()
+{
+    Console.Clear();
+    Console.WriteLine("Which result do you want to see?");
+    Console.WriteLine("1. GenderRatio");
+    Console.WriteLine("2. AgePyramid");
+    Console.WriteLine("3. AverageAge");
+    Console.WriteLine("4. AverageIncome");
+
+    Console.Write("Enter your choice: ");
+    string input = Console.ReadLine()!;
+    bool isNumber = int.TryParse(input, out int number);
+
+    if (isNumber)
+    {
+        if (number == (int)CensusOption.GenderRatio)
+        {
+            DisplayGenderRatio(people);
+        }
+        else if (number == (int)CensusOption.AgePyramid)
+        {
+            DisplayAgePyramid(people);
+        }
+        else if (number == (int)CensusOption.AverageIncome)
+        {
+            DisplayAverageAge(people);
+        }
+        else if (number == (int)CensusOption.AverageIncome)
+        {
+            DisplayAverageIncome(people);
+        }
+    }
 }
 
 static void GetInputData(ref Tuple<string, int, double>[] people, int index)
@@ -80,6 +114,116 @@ static void DisplayCensus(Tuple<string, int, double>[] people)
     Console.WriteLine("Press any key to continue...");
     Console.ReadKey();
 }
+static void DisplayGenderRatio(Tuple<string, int, double>[] people)
+{
+    Console.Clear();
+    int males = 0;
+    int females = 0;
+    foreach (var person in people)
+    {
+        if (person.Item1.ToLower() == "male")
+        {
+            males++;
+        }
+        else if (person.Item1.ToLower() == "female")
+        {
+            females++;
+        }
+    }
+    int total = males + females;
+    double maleRatio = (double)males / total * 100;
+    double femaleRatio = (double)females / total * 100;
+
+    Console.WriteLine($"Number of people interviewed: {total}");
+    Console.WriteLine($"Male: {maleRatio:F2}%");
+    Console.WriteLine($"Female: {femaleRatio:F2}%");
+
+    Console.WriteLine();
+    Console.WriteLine("Press any key to continue...");
+    Console.ReadKey();
+}
+
+static void DisplayAgePyramid(Tuple<string, int, double>[] people)
+{
+    Console.Clear();
+    Console.WriteLine("Age Pyramid");
+    Console.WriteLine("-----------");
+
+    int[] ageCounts = new int[101];
+
+    foreach (var person in people)
+    {
+        int age = person.Item2;
+        if (age >= 0 && age <= 100)
+        {
+            ageCounts[age]++;
+        }
+    }
+
+    int maxCount = ageCounts.Max();
+
+    for (int i = maxCount; i > 0; i--)
+    {
+        for (int j = 0; j < ageCounts.Length; j++)
+        {
+            if (ageCounts[j] >= i)
+            {
+                Console.Write("# ");
+            }
+            else
+            {
+                Console.Write("  ");
+            }
+        }
+        Console.WriteLine();
+    }
+
+    for (int i = 0; i < ageCounts.Length; i++)
+    {
+        Console.Write($"{i,2} ");
+    }
+
+    Console.WriteLine();
+    Console.WriteLine("Press any key to continue...");
+    Console.ReadKey();
+}
+
+static void DisplayAverageAge(Tuple<string, int, double>[] people)
+{
+    Console.Clear();
+    double totalAge = 0;
+    foreach (var person in people)
+    {
+        totalAge += person.Item2;
+    }
+    double averageAge = totalAge / people.Length;
+
+    Console.WriteLine($"Number of people interviewed: {people.Length}");
+    Console.WriteLine($"Average Age: {averageAge:F2}");
+
+    Console.WriteLine();
+    Console.WriteLine("Press any key to continue...");
+    Console.ReadKey();
+}
+
+static void DisplayAverageIncome(Tuple<string, int, double>[] people)
+{
+    Console.Clear();
+    Console.WriteLine("Average Income");
+
+    double totalIncome = 0.0;
+    foreach (var person in people)
+    {
+        totalIncome += person.Item3;
+    }
+
+    double averageIncome = totalIncome / people.Length;
+    Console.WriteLine($"The average income of the people interviewed is {averageIncome:C}.");
+
+    Console.WriteLine("\nPress any key to continue...");
+    Console.ReadKey();
+}
+
 
 public enum MenuOption
 {
