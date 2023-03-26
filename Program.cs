@@ -1,12 +1,8 @@
-﻿string[] genders = new string[0];
-int[] ages = new int[0];
-double[] incomes = new double[0];
+﻿Tuple<string, int, double>[] people = new Tuple<string, int, double>[0];
 
 while (true)
-
 {
-    
-
+    Console.Clear();
     Console.WriteLine("Menu:");
     Console.WriteLine("1. InputData");
     Console.WriteLine("2. Census");
@@ -22,72 +18,68 @@ while (true)
         {
             Console.WriteLine("How many people will be interviewed?");
             int numberOfPeople = int.Parse(Console.ReadLine()!);
-            LoopTheInput(numberOfPeople);
-
+            LoopTheInput(numberOfPeople, ref people);
         }
         else if (number == (int)MenuOption.Census)
-        { DisplayCensus(); } 
+        {
+            DisplayCensus(people);
+        }
         else if (number == (int)MenuOption.Exit)
-        { Environment.Exit(0); }
+        {
+            Environment.Exit(0);
+        }
     }
 }
 
-void LoopTheInput(int numberOfPeople)
+void LoopTheInput(int numberOfPeople, ref Tuple<string, int, double>[] people)
 {
+    Array.Resize(ref people, numberOfPeople);
     for (int i = 0; i < numberOfPeople; i++)
     {
-        GetInputData();
+        GetInputData(ref people, i);
     }
     Console.Clear();
     Console.WriteLine("The results are saved. Press 2 to see the results.");
-
 }
 
-static void GetInputData()
+static void GetInputData(ref Tuple<string, int, double>[] people, int index)
 {
     Console.Clear();
     Console.WriteLine("Tell me about yourself:");
 
     Console.Write("Enter gender: ");
     string gender = Console.ReadLine()!;
-    string[] genders = new string[1];
-    genders[0] = gender;
-   
 
     Console.Write("Enter age: ");
-    string ageInput = Console.ReadLine()!;
-    int age = int.Parse(ageInput);
-    int[] ages = new int[1];
-    ages[0] = age;
-    
-
+    int age = int.Parse(Console.ReadLine()!);
 
     Console.Write("Enter income (in euro): ");
-    string incomeInput = Console.ReadLine()!;
-    double income = double.Parse(incomeInput);
-    double[] incomes = new double[1];
-    incomes[0] = income;
+    double income = double.Parse(Console.ReadLine()!);
 
+    people[index] = Tuple.Create(gender, age, income);
 }
 
-static void DisplayCensus()
+static void DisplayCensus(Tuple<string, int, double>[] people)
 {
-    string[] genders = new string[1];
-    int[] ages = new int[1];
-    double[] incomes = new double[1];
-    Console.WriteLine($"Number of people interviewed: {genders.Length}");
-    Console.WriteLine("Ages");
-    for (int i = 0; i < ages.Length; i++)
-    {
-        Console.Write(ages[i] + " ");
-    }
-    Console.WriteLine("Incomes");
-    for (int i = 0; i < incomes.Length; i++)
-    {
-        Console.Write(incomes[i] + " ");
-    }
-}
+    Console.Clear();
+    Console.WriteLine($"Number of people interviewed: {people.Length}");
 
+    Console.WriteLine("Ages");
+    foreach (var person in people)
+    {
+        Console.Write(person.Item2 + " ");
+    }
+
+    Console.WriteLine("\nIncomes");
+    foreach (var person in people)
+    {
+        Console.Write(person.Item3 + " ");
+    }
+
+    Console.WriteLine();
+    Console.WriteLine("Press any key to continue...");
+    Console.ReadKey();
+}
 
 public enum MenuOption
 {
