@@ -1,4 +1,7 @@
-﻿Tuple<string, int, double>[] people = new Tuple<string, int, double>[0];
+﻿using System;
+
+(string, int, double)[] people;
+people = new (string, int, double)[0];
 
 while (true)
 {
@@ -32,7 +35,8 @@ while (true)
     }
 }
 
-void LoopTheInput(int numberOfPeople, ref Tuple<string, int, double>[] people)
+void LoopTheInput(int numberOfPeople, ref (string, int, double)[] people)
+
 {
     Array.Resize(ref people, numberOfPeople);
     for (int i = 0; i < numberOfPeople; i++)
@@ -42,7 +46,7 @@ void LoopTheInput(int numberOfPeople, ref Tuple<string, int, double>[] people)
     Console.Clear();
     Console.WriteLine("The results are saved. Press 2 to see the results.");
 }
-static void showCensusMenu()
+void showCensusMenu()
 {
     Console.Clear();
     Console.WriteLine("Which result do you want to see?");
@@ -65,7 +69,7 @@ static void showCensusMenu()
         {
             DisplayAgePyramid(people);
         }
-        else if (number == (int)CensusOption.AverageIncome)
+        else if (number == (int)CensusOption.AverageAge)
         {
             DisplayAverageAge(people);
         }
@@ -76,7 +80,8 @@ static void showCensusMenu()
     }
 }
 
-static void GetInputData(ref Tuple<string, int, double>[] people, int index)
+static void GetInputData(ref (string, int, double)[] people, int index)
+
 {
     Console.Clear();
     Console.WriteLine("Tell me about yourself:");
@@ -90,10 +95,11 @@ static void GetInputData(ref Tuple<string, int, double>[] people, int index)
     Console.Write("Enter income (in euro): ");
     double income = double.Parse(Console.ReadLine()!);
 
-    people[index] = Tuple.Create(gender, age, income);
+    people[index] = (gender, age, income);
 }
 
-static void DisplayCensus(Tuple<string, int, double>[] people)
+static void DisplayCensus((string, int, double)[] people)
+
 {
     Console.Clear();
     Console.WriteLine($"Number of people interviewed: {people.Length}");
@@ -114,7 +120,8 @@ static void DisplayCensus(Tuple<string, int, double>[] people)
     Console.WriteLine("Press any key to continue...");
     Console.ReadKey();
 }
-static void DisplayGenderRatio(Tuple<string, int, double>[] people)
+static void DisplayGenderRatio((string, int, double)[] people)
+
 {
     Console.Clear();
     int males = 0;
@@ -143,7 +150,8 @@ static void DisplayGenderRatio(Tuple<string, int, double>[] people)
     Console.ReadKey();
 }
 
-static void DisplayAgePyramid(Tuple<string, int, double>[] people)
+static void DisplayAgePyramid((string, int, double)[] people)
+
 {
     Console.Clear();
     Console.WriteLine("Age Pyramid");
@@ -188,7 +196,8 @@ static void DisplayAgePyramid(Tuple<string, int, double>[] people)
     Console.ReadKey();
 }
 
-static void DisplayAverageAge(Tuple<string, int, double>[] people)
+static void DisplayAverageAge((string, int, double)[] people)
+
 {
     Console.Clear();
     double totalAge = 0;
@@ -206,7 +215,8 @@ static void DisplayAverageAge(Tuple<string, int, double>[] people)
     Console.ReadKey();
 }
 
-static void DisplayAverageIncome(Tuple<string, int, double>[] people)
+static void DisplayAverageIncome((string, int, double)[] people)
+
 {
     Console.Clear();
     Console.WriteLine("Average Income");
