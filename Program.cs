@@ -1,4 +1,7 @@
 ﻿using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Xml.Linq;
+using System.Linq;
 
 (string, int, double)[] people;
 people = new (string, int, double)[0];
@@ -153,47 +156,81 @@ static void DisplayGenderRatio((string, int, double)[] people)
 static void DisplayAgePyramid((string, int, double)[] people)
 
 {
-    Console.Clear();
-    Console.WriteLine("Age Pyramid");
-    Console.WriteLine("-----------");
+    int totalPeople = people.Length;
+    int numChildren = people.Count(p => p.Item2 < 18);
+    int numMature = people.Count(p => p.Item2 >= 18 && p.Item2 <= 60);
+    int numElderly = people.Count(p => p.Item2 > 60);
 
-    int[] ageCounts = new int[101];
+    double pctChildren = numChildren * 100.0 / totalPeople;
+    double pctMature = numMature * 100.0 / totalPeople;
+    double pctElderly = numElderly * 100.0 / totalPeople;
 
-    foreach (var person in people)
+
+    int numChildrenBars = (int)Math.Round(pctChildren / 10);
+    int numMatureBars = (int)Math.Round(pctMature / 10);
+    int numElderlyBars = (int)Math.Round(pctElderly / 10);
+
+
+    Console.WriteLine("Age pyramid:");
+
+   
+
+    for (int i = 0; i < numChildrenBars; i++)
     {
-        int age = person.Item2;
-        if (age >= 0 && age <= 100)
-        {
-            ageCounts[age]++;
-        }
+        Console.Write("*");
     }
-
-    int maxCount = ageCounts.Max();
-
-    for (int i = maxCount; i > 0; i--)
-    {
-        for (int j = 0; j < ageCounts.Length; j++)
-        {
-            if (ageCounts[j] >= i)
-            {
-                Console.Write("# ");
-            }
-            else
-            {
-                Console.Write("  ");
-            }
-        }
-        Console.WriteLine();
-    }
-
-    for (int i = 0; i < ageCounts.Length; i++)
-    {
-        Console.Write($"{i,2} ");
-    }
-
     Console.WriteLine();
-    Console.WriteLine("Press any key to continue...");
-    Console.ReadKey();
+
+    for (int i = 0; i < numMatureBars; i++)
+    {
+        Console.Write("*");
+    }
+    Console.WriteLine();
+
+    for (int i = 0; i < numElderlyBars; i++)
+    {
+        Console.Write("*");
+    }
+    Console.WriteLine();
+
+
+    //int[] ageCounts = new int[101];
+
+    //foreach (var person in people)
+    //{
+    //    int age = person.Item2;
+    //    if (age >= 0 && age <= 100)
+    //    {
+    //        ageCounts[age]++;
+    //    }
+    //}
+
+    //int maxCount = ageCounts.Max();
+
+    //for (int i = maxCount; i > 0; i--)
+    //{
+    //    for (int j = 0; j < ageCounts.Length; j++)
+    //    {
+    //        if (ageCounts[j] >= i)
+    //        {
+    //            Console.Write("# ");
+    //        }
+    //        else
+    //        {
+    //            Console.Write("  ");
+    //        }
+    //    }
+    //    Console.WriteLine();
+    //}
+
+    //for (int i = 0; i < ageCounts.Length; i++)
+    //{
+    //    Console.Write($"{i,2} ");
+    //}
+
+    //Console.WriteLine();
+    //Console.WriteLine("Press any key to continue...");
+    //Console.ReadKey();
 }
 
 static void DisplayAverageAge((string, int, double)[] people)
