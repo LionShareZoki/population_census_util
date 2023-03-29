@@ -1,7 +1,6 @@
-﻿using System;
+﻿
+
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Xml.Linq;
-using System.Linq;
 
 (string, int, double)[] people;
 people = new (string, int, double)[0];
@@ -29,14 +28,26 @@ while (true)
         else if (number == (int)MenuOption.Census)
         {
             showCensusMenu();
-            DisplayCensus(people);
         }
         else if (number == (int)MenuOption.Exit)
         {
             Environment.Exit(0);
         }
     }
+    else if (!isNumber)
+    {
+        
+        Console.WriteLine("You will have to enter a number. Do you want to try again?");
+        Console.ReadLine();
+        
+    }
+    else if (input == "")
+    {
+      Console.WriteLine("You will have to enter a number. Do you want to try again?"); 
+      Console.ReadLine(); 
+    }
 }
+
 
 void LoopTheInput(int numberOfPeople, ref (string, int, double)[] people)
 
@@ -48,22 +59,43 @@ void LoopTheInput(int numberOfPeople, ref (string, int, double)[] people)
     }
     Console.Clear();
     Console.WriteLine("The results are saved. Press 2 to see the results.");
+    Console.WriteLine("Press 2 to see the results.");
+    Console.WriteLine("Press any key to go to main menu");
+    string input = Console.ReadLine()!;
+    bool isNumber = int.TryParse(input, out int number);
+    if (number == 2)
+    {
+        showCensusMenu();
+    }
 }
 void showCensusMenu()
 {
-    Console.Clear();
-    Console.WriteLine("Which result do you want to see?");
-    Console.WriteLine("1. GenderRatio");
-    Console.WriteLine("2. AgePyramid");
-    Console.WriteLine("3. AverageAge");
-    Console.WriteLine("4. AverageIncome");
-
-    Console.Write("Enter your choice: ");
-    string input = Console.ReadLine()!;
-    bool isNumber = int.TryParse(input, out int number);
-
-    if (isNumber)
+    while (true)
     {
+        Console.Clear();
+        Console.WriteLine("Which result do you want to see?");
+        Console.WriteLine("1. GenderRatio");
+        Console.WriteLine("2. AgePyramid");
+        Console.WriteLine("3. AverageAge");
+        Console.WriteLine("4. AverageIncome");
+
+        Console.Write("Enter your choice: ");
+        string input = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            Console.WriteLine("You need to enter a number. Press any key to try again...");
+            Console.ReadKey();
+            continue;
+        }
+
+        if (!int.TryParse(input, out int number))
+        {
+            Console.WriteLine("You need to enter a valid number. Press any key to try again...");
+            Console.ReadKey();
+            continue;
+        }
+
         if (number == (int)CensusOption.GenderRatio)
         {
             DisplayGenderRatio(people);
@@ -80,6 +112,14 @@ void showCensusMenu()
         {
             DisplayAverageIncome(people);
         }
+        else
+        {
+            Console.WriteLine("You need to enter a valid number between 1 and 4. Press any key to try again...");
+            Console.ReadKey();
+            continue;
+        }
+
+        break;
     }
 }
 
@@ -87,42 +127,40 @@ static void GetInputData(ref (string, int, double)[] people, int index)
 
 {
     Console.Clear();
+    Console.WriteLine("Hello!");
     Console.WriteLine("Tell me about yourself:");
+    Console.WriteLine("");
 
-    Console.Write("Enter gender: ");
-    string gender = Console.ReadLine()!;
+    string gender;
+    do
+    {
+        Console.Write("Enter gender (male/female): ");
+        gender = Console.ReadLine()!;
+        if (gender.ToLower() != "male" && gender.ToLower() != "female")
+        {
+            Console.WriteLine("Gender can only be male or female. Please enter your answer again.");
+        }
+    } while (gender.ToLower() != "male" && gender.ToLower() != "female");
 
     Console.Write("Enter age: ");
-    int age = int.Parse(Console.ReadLine()!);
+    int age;
+    while (!int.TryParse(Console.ReadLine(), out age) || age < 0)
+    {
+        Console.WriteLine("Age must be a positive number. Please enter a valid age: ");
+    }
 
     Console.Write("Enter income (in euro): ");
-    double income = double.Parse(Console.ReadLine()!);
+    double income;
+
+    while (!double.TryParse(Console.ReadLine(), out income))
+    {
+        Console.WriteLine("Invalid input! Income must be a number. Please try again.");
+        Console.Write("Enter income (in euro): ");
+    }
 
     people[index] = (gender, age, income);
 }
 
-static void DisplayCensus((string, int, double)[] people)
-
-{
-    Console.Clear();
-    Console.WriteLine($"Number of people interviewed: {people.Length}");
-
-    Console.WriteLine("Ages");
-    foreach (var person in people)
-    {
-        Console.Write(person.Item2 + " ");
-    }
-
-    Console.WriteLine("\nIncomes");
-    foreach (var person in people)
-    {
-        Console.Write(person.Item3 + " ");
-    }
-
-    Console.WriteLine();
-    Console.WriteLine("Press any key to continue...");
-    Console.ReadKey();
-}
 static void DisplayGenderRatio((string, int, double)[] people)
 
 {
